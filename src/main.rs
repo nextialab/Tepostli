@@ -1,5 +1,10 @@
+extern crate regex;
+
 use std::net::UdpSocket;
+use regex::Regex;
 use std::str;
+
+let response = Regex.new(r"\(init\s+(l|r)\s+(\d+)\s+(\w+)\)").unwrap();
 
 fn main() {
     println!("Tepostli 0.1.0");
