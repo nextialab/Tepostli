@@ -80,6 +80,26 @@ fn parse(mut chars: Peekable<Chars>) -> (Vec<SList>, Peekable<Chars>) {
     return (slist, chars);
 }
 
+pub fn find_list<'a>(list: &'a Vec<SList>, name: String) -> Option<&'a Vec<SList>> {
+    for item in list {
+        let copy_name = name.clone();
+        match item {
+            &SList::List(ref slist) => {
+                let result = find_list(slist, copy_name);
+                match result {
+                    Some(_) => return result,
+                    None => continue
+                }
+            },
+            &SList::Atom(ref key) if *key == copy_name => {
+                return Some(&list)
+            },
+            &SList::Atom(_) => continue
+        }
+    }
+    return None;
+}
+
 pub fn sparser(string: String) -> Vec<SList> {
     let mut chars = string.chars().peekable();
     chars.next();
